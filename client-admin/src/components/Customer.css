@@ -1,0 +1,137 @@
+/* Container */
+.customer-container {
+  padding: 20px;
+}
+
+/* Title */
+.section-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: bold;
+  margin: 20px 0;
+  color: #2c3e50;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, #3498db, #2196f3);
+  border-radius: 3px;
+}
+
+/* Table */
+.table-custom {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background: #fff;
+  table-layout: fixed;
+}
+
+.table-custom th {
+  background: linear-gradient(135deg, #3498db, #2196f3);
+  color: white;
+  padding: 14px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  word-wrap: break-word;
+}
+
+.table-custom td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #e8eef5;
+  vertical-align: middle;
+  word-wrap: break-word;
+}
+
+/* Center align for ID and Status */
+.table-custom tr th:first-child,
+.table-custom tr td:first-child {
+  text-align: center;
+  width: 8%;
+}
+
+.table-custom tr th:nth-child(6),
+.table-custom tr td:nth-child(6) {
+  text-align: center;
+  width: 10%;
+}
+
+.table-custom tr th:nth-child(7),
+.table-custom tr td:nth-child(7) {
+  text-align: center;
+  width: 12%;
+}
+
+/* Hover */
+.table-custom tbody tr:hover {
+  background: #f0f4ff;
+  box-shadow: inset 0 0 10px rgba(63, 81, 181, 0.08);
+  cursor: pointer;
+}
+
+/* Action button */
+.action-btn {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Email button */
+.btn-email {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: white;
+}
+
+.btn-email:hover {
+  background: linear-gradient(135deg, #27ae60, #1e8449);
+  box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Deactive button */
+.btn-deactive {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+}
+
+.btn-deactive:hover {
+  background: linear-gradient(135deg, #c0392b, #a93226);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Image */
+.img-small {
+  border-radius: 8px;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Section spacing */
+.section {
+  margin-top: 30px;
+}
