@@ -11,13 +11,51 @@ class Login extends Component {
     super(props);
     this.state = {
       txtUsername: '',
-      txtPassword: ''
+      txtPassword: '',
+      showForgotModal: false,
+      resetEmail: '',
+      toast: null
     };
   }
 
+  showToast(msg, type = 'success') {
+    this.setState({ toast: { msg, type } });
+    setTimeout(() => this.setState({ toast: null }), 2500);
+  }
+
+  handleForgotPassword = () => {
+    const { resetEmail } = this.state;
+    if (!resetEmail) {
+      this.showToast('Vui lòng nhập email của bạn', 'error');
+      return;
+    }
+
+    axios.post('/api/customer/forgot-password', { email: resetEmail })
+      .then((res) => {
+        if (res.data.success) {
+          this.showToast('Link khôi phục đã được gửi vào email!', 'success');
+          setTimeout(() => this.setState({ showForgotModal: false, resetEmail: '' }), 2000);
+        } else {
+          this.showToast(res.data.message || 'Lỗi gửi email', 'error');
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        this.showToast('Lỗi kết nối server', 'error');
+      });
+  }
+
   render() {
+    const { toast, showForgotModal } = this.state;
+
     return (
       <div className="login-container">
+        {toast && (
+          <div className={`login-toast login-toast--${toast.type}`}>
+            {toast.type === 'success' ? '✓' : '⚠'} {toast.msg}
+          </div>
+        )}
+
         <div className="login-wrapper">
           
           {/* Left - Decoration */}
@@ -57,7 +95,12 @@ class Login extends Component {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Password</label>
+                <div className="password-header">
+                  <label className="form-label">Password</label>
+                  <span className="forgot-pwd-link" onClick={() => this.setState({ showForgotModal: true })}>
+                    Quên mật khẩu?
+                  </span>
+                </div>
                 <input
                   type="password"
                   placeholder="Enter your password"
@@ -81,6 +124,40 @@ class Login extends Component {
           </div>
 
         </div>
+
+        {/* Forgot Password Modal */}
+        {showForgotModal && (
+          <div className="forgot-modal-overlay">
+            <div className="forgot-modal-content">
+              <button className="forgot-modal-close" onClick={() => this.setState({ showForgotModal: false })}>✕</button>
+              
+              <div className="forgot-icon">🔐</div>
+              <h3 className="forgot-title">Khôi phục mật khẩu</h3>
+              <p className="forgot-desc">Vui lòng nhập địa chỉ email bạn đã dùng để đăng ký. Chúng tôi sẽ gửi một liên kết để lấy lại mật khẩu.</p>
+              
+              <div className="form-group">
+                <input
+                  type="email"
+                  placeholder="Nhập email của bạn"
+                  className="login-input"
+                  value={this.state.resetEmail}
+                  onChange={(e) => this.setState({ resetEmail: e.target.value })}
+                />
+              </div>
+
+              <button className="forgot-btn-submit" onClick={this.handleForgotPassword}>
+                Gửi liên kết khôi phục
+              </button>
+
+              <p className="forgot-or-text">Đã có token từ email?{' '}
+                <span className="forgot-direct-link" onClick={() => { this.setState({ showForgotModal: false }); this.props.navigate('/reset-password'); }}>
+                  Đặt lại ngay
+                </span>
+              </p>
+            </div>
+          </div>
+        )}
+
       </div>
     );
   }

@@ -7,6 +7,24 @@ const CustomerDAO = {
     const customer = await Models.Customer.findOne(query);
     return customer;
   },
+  async selectByEmail(email) {
+    const query = { email: email };
+    const customer = await Models.Customer.findOne(query);
+    return customer;
+  },
+  async updateToken(_id, token) {
+    const query = { _id: _id };
+    const newvalues = { token: token };
+    const result = await Models.Customer.findOneAndUpdate(query, newvalues, { new: true });
+    return result;
+  },
+  async resetPassword(_id, token, password) {
+    const query = { _id: _id, token: token };
+    // Sau khi đổi pass, xóa luôn token để an toàn
+    const newvalues = { password: password, token: '' };
+    const result = await Models.Customer.findOneAndUpdate(query, newvalues, { new: true });
+    return result;
+  },
   async insert(customer) {
     const mongoose = require('mongoose');
     customer._id = new mongoose.Types.ObjectId();

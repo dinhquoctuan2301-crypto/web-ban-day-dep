@@ -10,14 +10,24 @@ class Login extends Component {
     super(props);
     this.state = {
       txtUsername: 'admin',
-      txtPassword: '123456'
+      txtPassword: '123456',
+      toast: null
     };
+  }
+
+  showToast = (msg, type = 'success') => {
+    this.setState({ toast: { msg, type } });
+    setTimeout(() => this.setState({ toast: null }), 2500);
   }
 
   render() {
     if (this.context.token === '') {
+      const { txtUsername, txtPassword, toast } = this.state;
       return (
         <div className="login-container">
+          {toast && (
+            <div className={`admin-toast admin-toast--${toast.type}`}>{toast.msg}</div>
+          )}
           <div className="login-wrapper">
             
             {/* Left - Decoration */}
@@ -43,7 +53,6 @@ class Login extends Component {
             {/* Right - Form */}
             <div className="login-card">
               <h2 className="login-title">
-                <span className="title-icon">🔐</span>
                 ADMIN LOGIN
               </h2>
 
@@ -54,7 +63,7 @@ class Login extends Component {
                     type="text"
                     placeholder="Enter your username"
                     className="login-input"
-                    value={this.state.txtUsername}
+                    value={txtUsername}
                     onChange={(e) => this.setState({ txtUsername: e.target.value })}
                   />
                 </div>
@@ -65,7 +74,7 @@ class Login extends Component {
                     type="password"
                     placeholder="Enter your password"
                     className="login-input"
-                    value={this.state.txtPassword}
+                    value={txtPassword}
                     onChange={(e) => this.setState({ txtPassword: e.target.value })}
                   />
                 </div>
@@ -99,7 +108,7 @@ class Login extends Component {
       const account = { username: txtUsername, password: txtPassword };
       this.apiLogin(account);
     } else {
-      alert('Please input username and password');
+      this.showToast('Vui lòng nhập tài khoản và mật khẩu', 'warning');
     }
   }
 
@@ -110,10 +119,13 @@ class Login extends Component {
       if (result.success === true) {
         this.context.setToken(result.token);
         this.context.setUsername(account.username);
+        this.showToast('Đăng nhập thành công!', 'success');
       } else {
-        alert(result.message);
+        this.showToast(result.message || 'Sai tài khoản hoặc mật khẩu', 'error');
         this.setState({ txtUsername: '', txtPassword: '' });
       }
+    }).catch(err => {
+      this.showToast('Lỗi kết nối server', 'error');
     });
   }
 }

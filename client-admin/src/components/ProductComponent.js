@@ -19,83 +19,14 @@ class Product extends Component {
       products: [],
       noPages: 0,
       curPage: 1,
-      itemSelected: null
+      itemSelected: null,
+      toast: null
     };
   }
 
-  render() {
-    const prods = this.state.products.map((item) => {
-      if (!item || !item.category) return null; // 👈 chống crash
-
-      return (
-        <tr
-          key={item._id}
-          className="product-row"
-          onClick={() => this.trItemClick(item)}
-        >
-          <td>{item._id}</td>
-          <td>{item.name}</td>
-          <td className="price">{formatVND(item.price)}</td>
-          <td>{new Date(item.cdate).toLocaleString()}</td>
-          <td>{item.category?.name}</td>
-          <td>
-            <img
-              src={"data:image/jpg;base64," + item.image}
-              alt=""
-              className="product-img-admin"
-            />
-          </td>
-        </tr>
-      );
-    });
-
-    const pagination = Array.from({ length: this.state.noPages }, (_, index) => (
-      <button
-        key={index}
-        className={`page-btn ${this.state.curPage === index + 1 ? 'active' : ''}`}
-        onClick={() => this.lnkPageClick(index + 1)}
-      >
-        {index + 1}
-      </button>
-    ));
-
-    return (
-      <div className="product-container">
-
-        {/* PRODUCT LIST */}
-        <div className="product-card">
-          <h2 className="product-list-title">PRODUCT LIST</h2>
-
-          <table className="product-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Date</th>
-                <th>Category</th>
-                <th>Image</th>
-              </tr>
-            </thead>
-
-            <tbody>{prods}</tbody>
-          </table>
-
-          {/* PAGINATION */}
-          <div className="pagination">{pagination}</div>
-        </div>
-
-        {/* DETAIL */}
-        <div className="product-detail">
-          <ProductDetail
-            item={this.state.itemSelected}
-            curPage={this.state.curPage}
-            updateProducts={this.updateProducts}
-          />
-        </div>
-
-      </div>
-    );
+  showToast = (msg, type = 'success') => {
+    this.setState({ toast: { msg, type } });
+    setTimeout(() => this.setState({ toast: null }), 2500);
   }
 
   componentDidMount() {
@@ -105,6 +36,102 @@ class Product extends Component {
   updateProducts = (products, noPages, curPage) => {
     this.setState({ products, noPages, curPage });
   };
+
+  render() {
+    const { products, itemSelected, curPage, noPages, toast } = this.state;
+
+    const pagination = Array.from({ length: noPages }, (_, index) => (
+      <button
+        key={index}
+        className={`page-btn ${curPage === index + 1 ? 'active' : ''}`}
+        onClick={() => this.lnkPageClick(index + 1)}
+      >
+        {index + 1}
+      </button>
+    ));
+
+    return (
+      <div className="product-wrap">
+
+        {toast && (
+          <div className={`admin-toast admin-toast--${toast.type}`}>{toast.msg}</div>
+        )}
+
+        <div className="product-layout">
+          {/* PRODUCT LIST (Left) */}
+          <div className="admin-panel product-list-panel">
+            <div className="panel-header">
+              <h3>Danh sách sản phẩm</h3>
+              <span>{products.length} sản phẩm (Trang {curPage}/{noPages})</span>
+            </div>
+            
+            <div className="table-wrap">
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>Ảnh</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Danh mục</th>
+                    <th>Giá</th>
+                    <th>Tồn kho</th>
+                    <th>Ngày tạo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {products.map(item => {
+                    if (!item || !item.category) return null;
+                    const isSelected = itemSelected?._id === item._id;
+                    return (
+                      <tr
+                        key={item._id}
+                        className={`product-row ${isSelected ? 'selected' : ''}`}
+                        onClick={() => this.trItemClick(item)}
+                      >
+                        <td>
+                          <img
+                            src={item.image.startsWith('data:') ? item.image : "data:image/jpg;base64," + item.image}
+                            alt=""
+                            className="product-img-thumb"
+                          />
+                        </td>
+                        <td><strong>{item.name}</strong></td>
+                        <td><span className="badge badge-muted">{item.category?.name}</span></td>
+                        <td className="product-price">{formatVND(item.price)}</td>
+                        <td>{item.variants ? item.variants.reduce((sum, v) => sum + (v.stock || 0), 0) : 0}</td>
+                        <td>{new Date(item.cdate).toLocaleDateString('vi-VN')}</td>
+                      </tr>
+                    );
+                  })}
+                  {products.length === 0 && (
+                    <tr><td colSpan="6" className="no-data">Chưa có sản phẩm nào.</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Pagination */}
+            {noPages > 1 && (
+              <div className="pagination-wrap">
+                {pagination}
+              </div>
+            )}
+          </div>
+
+          {/* PRODUCT DETAIL FORM (Right) */}
+          <div className="product-form-panel">
+            <ProductDetail
+              item={itemSelected}
+              curPage={curPage}
+              updateProducts={this.updateProducts}
+              showToast={this.showToast}
+              onClearSelection={() => this.setState({ itemSelected: null })}
+            />
+          </div>
+        </div>
+
+      </div>
+    );
+  }
 
   // EVENTS
   lnkPageClick(index) {

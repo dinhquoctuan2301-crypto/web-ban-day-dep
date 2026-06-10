@@ -23,18 +23,27 @@ const CustomerSchema = mongoose.Schema({
   token: String,
 }, { versionKey: false });
 
+const VariantSchema = mongoose.Schema({
+  color: String,
+  size: String,
+  stock: Number
+}, { versionKey: false, _id: false });
+
 const ProductSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
   name: String,
   price: Number,
   image: String,
   cdate: Number,
-  category: CategorySchema
+  category: CategorySchema,
+  variants: [VariantSchema]
 }, { versionKey: false });
 
 const ItemSchema = mongoose.Schema({
   product: ProductSchema,
-  quantity: Number
+  quantity: Number,
+  color: String,
+  size: String
 }, { versionKey: false, _id: false });
 
 const OrderSchema = mongoose.Schema({

@@ -11,13 +11,25 @@ class Signup extends Component {
       txtPassword: '',
       txtName: '',
       txtPhone: '',
-      txtEmail: ''
+      txtEmail: '',
+      toast: null
     };
   }
 
+  showToast(msg, type = 'success') {
+    this.setState({ toast: { msg, type } });
+    setTimeout(() => this.setState({ toast: null }), 3000);
+  }
+
   render() {
+    const { toast } = this.state;
     return (
       <div className="signup-container">
+        {toast && (
+          <div className={`signup-toast signup-toast--${toast.type}`}>
+            {toast.type === 'success' ? '✓' : '⚠'} {toast.msg}
+          </div>
+        )}
         <div className="signup-wrapper">
           
           {/* Left - Decoration */}
@@ -135,17 +147,21 @@ class Signup extends Component {
 
       this.apiSignup(account);
     } else {
-      alert('Please fill all fields');
+      this.showToast('Vui lòng điền đầy đủ thông tin', 'error');
     }
   }
 
   // api
   apiSignup(account) {
     axios.post('/api/customer/signup', account).then((res) => {
-      alert(res.data.message);
       if (res.data.success === true) {
-        this.props.navigate('/login');
+        this.showToast(res.data.message, 'success');
+        setTimeout(() => this.props.navigate('/active'), 1500);
+      } else {
+        this.showToast(res.data.message, 'error');
       }
+    }).catch(err => {
+      this.showToast('Lỗi kết nối server', 'error');
     });
   }
 }

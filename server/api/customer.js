@@ -16,11 +16,11 @@ router.get('/categories', async function (req, res) {
 });
 // product
 router.get('/products/new', async function (req, res) {
-  const products = await ProductDAO.selectTopNew(3);
+  const products = await ProductDAO.selectTopNew(8);
   res.json(products);
 });
 router.get('/products/hot', async function (req, res) {
-  const products = await ProductDAO.selectTopHot(3);
+  const products = await ProductDAO.selectTopHot(8);
   res.json(products);
 });
 router.get('/products/category/:cid', async function (req, res) {
@@ -68,11 +68,18 @@ router.post('/signup', async function (req, res) {
     const result = await CustomerDAO.insert(newCust);
 
     if (result) {
+      // Gửi email bất đồng bộ (không chờ)
+      try {
+        await EmailUtil.send(email, result._id, token);
+      } catch (err) {
+        console.error('Lỗi gửi email xác thực:', err);
+      }
+
       res.json({
         success: true,
-        message: 'Signup successful. Please activate your account.',
-        id: result._id,
-        token: token
+        message: 'Signup successful. Please check your email to activate your account.',
+        // id: result._id,
+        // token: token
       });
     } 
     else {
@@ -81,6 +88,45 @@ router.post('/signup', async function (req, res) {
         message: 'Insert failure'
       });
     }
+  }
+});
+
+// forgot-password
+router.post('/forgot-password', async function (req, res) {
+  const email = req.body.email;
+  const dbCust = await CustomerDAO.selectByEmail(email);
+
+  if (dbCust) {
+    const now = new Date().getTime();
+    const token = CryptoUtil.md5(now.toString());
+    const result = await CustomerDAO.updateToken(dbCust._id, token);
+    
+    if (result) {
+      try {
+        await EmailUtil.sendResetPassword(email, dbCust._id, token);
+      } catch (err) {
+        console.error('Lỗi gửi email khôi phục:', err);
+      }
+      res.json({ success: true, message: 'Check your email for reset password instructions' });
+    } else {
+      res.json({ success: false, message: 'Lỗi cập nhật token' });
+    }
+  } else {
+    res.json({ success: false, message: 'Email không tồn tại trong hệ thống' });
+  }
+});
+
+// reset-password
+router.post('/reset-password', async function (req, res) {
+  const _id = req.body.id;
+  const token = req.body.token;
+  const newPassword = req.body.password;
+  
+  const result = await CustomerDAO.resetPassword(_id, token, newPassword);
+  if (result) {
+    res.json({ success: true, message: 'Đặt lại mật khẩu thành công' });
+  } else {
+    res.json({ success: false, message: 'Mã xác thực không hợp lệ hoặc đã hết hạn' });
   }
 });
 router.post('/active', async function (req, res) {
