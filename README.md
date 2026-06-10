@@ -128,6 +128,14 @@ npm start
 - Khách hàng: `http://localhost:3000`
 - Admin: `http://localhost:3000/admin`
 
+## Tài khoản mẫu
+- Admin:
+  - Username: `admin`
+  - Password: `123`
+- Customer (mẫu):
+  - Username: `Ho`
+  - Password: `123456`
+
 ## API chính
 
 ### Backend chung
