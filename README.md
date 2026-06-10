@@ -40,11 +40,12 @@ Dự án gồm 3 phần chính:
 - Cập nhật thông tin cá nhân
 
 ## Ảnh minh họa chức năng
-Dưới đây là các vị trí bạn có thể gán ảnh minh họa cho từng màn hình chức năng. Tạo thư mục `docs/screenshots/` và thêm ảnh theo tên file sau để GitHub tự hiển thị.
-
 ### Admin
 #### Đăng nhập
 ![Admin Login](docs/screenshots/admin-login.png)
+
+#### Dashboard
+![Admin Dashboard](docs/screenshots/admin-dashboard.png)
 
 #### Quản lý danh mục
 ![Admin Categories](docs/screenshots/admin-categories.png)
@@ -59,6 +60,12 @@ Dưới đây là các vị trí bạn có thể gán ảnh minh họa cho từn
 ![Admin Customers](docs/screenshots/admin-customers.png)
 
 ### Customer
+#### Đăng nhập
+![Customer Login](docs/screenshots/customer-login.png)
+
+#### Đăng ký
+![Customer Signup](docs/screenshots/customer-sginup.png)
+
 #### Trang chủ / Sản phẩm mới
 ![Customer Home](docs/screenshots/customer-home.png)
 
