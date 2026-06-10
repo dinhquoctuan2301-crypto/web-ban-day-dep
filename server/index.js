@@ -1,3 +1,4 @@
+require('dotenv').config();
 //CLI: npm install express body-parser --save
 const express = require('express');
 const http = require('http');

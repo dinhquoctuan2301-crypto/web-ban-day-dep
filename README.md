@@ -172,17 +172,6 @@ npm start
 
 ## Lưu ý bảo mật
 
-- Thông tin MongoDB và email hiện đang được định nghĩa trực tiếp trong `server/utils/MyConstants.js`.
-- Nếu triển khai thực tế, bạn nên dùng biến môi trường (`.env`) để bảo mật `DB_USER`, `DB_PASS`, `EMAIL_USER`, `EMAIL_PASS`, `JWT_SECRET`.
-
-## Gợi ý phát triển
-
-- Sử dụng `npm run build` trong `client-admin` và `client-customer` khi thay đổi frontend
-- Sửa port React nếu cần chạy hai client đồng thời trong môi trường dev
-- Cải thiện bảo mật bằng cách tách cấu hình môi trường ra file `.env`
-
----
-
-## License
-
-Dự án này hiện chưa có license cụ thể.
+- Hiện tại backend đã được cấu hình để sử dụng biến môi trường trong `server/.env`.
+- Tạo file `server/.env` từ mẫu `server/.env.example`.
+- Sử dụng `DB_USER`, `DB_PASS`, `DB_SERVER`, `DB_DATABASE`, `JWT_SECRET`, `JWT_EXPIRES`, `EMAIL_USER`, `EMAIL_PASS` để bảo mật cấu hình.
