@@ -10,7 +10,10 @@ class Login extends Component {
     super(props);
     this.state = {
       txtUsername: 'admin',
-      txtPassword: '123456',
+      txtPassword: '123',
+      showPassword: false,
+      rememberMe: true,
+      isSubmitting: false,
       toast: null
     };
   }
@@ -22,7 +25,7 @@ class Login extends Component {
 
   render() {
     if (this.context.token === '') {
-      const { txtUsername, txtPassword, toast } = this.state;
+      const { txtUsername, txtPassword, toast, showPassword, rememberMe, isSubmitting } = this.state;
       return (
         <div className="login-container">
           {toast && (
@@ -70,20 +73,41 @@ class Login extends Component {
 
                 <div className="form-group">
                   <label className="form-label">Password</label>
-                  <input
-                    type="password"
-                    placeholder="Enter your password"
-                    className="login-input"
-                    value={txtPassword}
-                    onChange={(e) => this.setState({ txtPassword: e.target.value })}
-                  />
+                  <div className="password-input-wrapper">
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="Enter your password"
+                      className="login-input"
+                      value={txtPassword}
+                      onChange={(e) => this.setState({ txtPassword: e.target.value })}
+                    />
+                    <button
+                      type="button"
+                      className="password-toggle"
+                      onClick={() => this.setState({ showPassword: !showPassword })}
+                    >
+                      {showPassword ? 'Hide' : 'Show'}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="form-group remember-me-group">
+                  <label className="remember-me-label">
+                    <input
+                      type="checkbox"
+                      checked={rememberMe}
+                      onChange={(e) => this.setState({ rememberMe: e.target.checked })}
+                    />
+                    Remember me
+                  </label>
                 </div>
 
                 <button
                   className="login-btn"
                   onClick={(e) => this.btnLoginClick(e)}
+                  disabled={isSubmitting}
                 >
-                  LOGIN
+                  {isSubmitting ? 'Đang đăng nhập...' : 'LOGIN'}
                 </button>
               </form>
 
@@ -104,9 +128,9 @@ class Login extends Component {
     e.preventDefault();
     const { txtUsername, txtPassword } = this.state;
 
-    if (txtUsername && txtPassword) {
-      const account = { username: txtUsername, password: txtPassword };
-      this.apiLogin(account);
+    if (txtUsername.trim() && txtPassword.trim()) {
+      const account = { username: txtUsername.trim(), password: txtPassword };
+      this.setState({ isSubmitting: true }, () => this.apiLogin(account));
     } else {
       this.showToast('Vui lòng nhập tài khoản và mật khẩu', 'warning');
     }
@@ -120,12 +144,18 @@ class Login extends Component {
         this.context.setToken(result.token);
         this.context.setUsername(account.username);
         this.showToast('Đăng nhập thành công!', 'success');
+        if (this.state.rememberMe) {
+          localStorage.setItem('adminToken', result.token);
+          localStorage.setItem('adminUsername', account.username);
+        }
+        window.location.href = '/admin/home';
       } else {
         this.showToast(result.message || 'Sai tài khoản hoặc mật khẩu', 'error');
-        this.setState({ txtUsername: '', txtPassword: '' });
+        this.setState({ txtPassword: '', isSubmitting: false });
       }
     }).catch(err => {
       this.showToast('Lỗi kết nối server', 'error');
+      this.setState({ isSubmitting: false });
     });
   }
 }

@@ -18,6 +18,7 @@ Dự án gồm 3 phần chính:
 
 ### Admin
 - Đăng nhập bằng username/password
+- Show/hide password và remember me cho trang login
 - Quản lý danh mục sản phẩm (CRUD)
 - Quản lý sản phẩm (CRUD)
 - Xem danh sách đơn hàng
@@ -39,43 +40,42 @@ Dự án gồm 3 phần chính:
 - Cập nhật thông tin cá nhân
 
 ## Ảnh minh họa chức năng
-Dưới đây là các vị trí gán ảnh cho từng màn hình chức năng. Bạn chỉ cần đặt hình ảnh trong `docs/screenshots/` hoặc thay đổi đường dẫn nếu dùng thư mục khác.
+Dưới đây là các vị trí bạn có thể gán ảnh minh họa cho từng màn hình chức năng. Tạo thư mục `docs/screenshots/` và thêm ảnh theo tên file sau để GitHub tự hiển thị.
 
 ### Admin
-- Đăng nhập:
-  - `docs/screenshots/admin-login.png`
-  - `![Admin Login](docs/screenshots/admin-login.png)`
-- Quản lý danh mục:
-  - `docs/screenshots/admin-categories.png`
-  - `![Admin Categories](docs/screenshots/admin-categories.png)`
-- Quản lý sản phẩm:
-  - `docs/screenshots/admin-products.png`
-  - `![Admin Products](docs/screenshots/admin-products.png)`
-- Quản lý đơn hàng:
-  - `docs/screenshots/admin-orders.png`
-  - `![Admin Orders](docs/screenshots/admin-orders.png)`
-- Quản lý khách hàng:
-  - `docs/screenshots/admin-customers.png`
-  - `![Admin Customers](docs/screenshots/admin-customers.png)`
+#### Đăng nhập
+![Admin Login](docs/screenshots/admin-login.png)
+
+#### Quản lý danh mục
+![Admin Categories](docs/screenshots/admin-categories.png)
+
+#### Quản lý sản phẩm
+![Admin Products](docs/screenshots/admin-products.png)
+
+#### Quản lý đơn hàng
+![Admin Orders](docs/screenshots/admin-orders.png)
+
+#### Quản lý khách hàng
+![Admin Customers](docs/screenshots/admin-customers.png)
 
 ### Customer
-- Trang chủ / Sản phẩm mới:
-  - `docs/screenshots/customer-home.png`
-  - `![Customer Home](docs/screenshots/customer-home.png)`
-- Tìm kiếm sản phẩm:
-  - `docs/screenshots/customer-search.png`
-  - `![Customer Search](docs/screenshots/customer-search.png)`
-- Chi tiết sản phẩm:
-  - `docs/screenshots/customer-product-detail.png`
-  - `![Customer Product Detail](docs/screenshots/customer-product-detail.png)`
-- Giỏ hàng / Thanh toán:
-  - `docs/screenshots/customer-cart.png`
-  - `![Customer Cart](docs/screenshots/customer-cart.png)`
-- Thông tin cá nhân / đơn hàng:
-  - `docs/screenshots/customer-profile.png`
-  - `![Customer Profile](docs/screenshots/customer-profile.png)`
+#### Trang chủ / Sản phẩm mới
+![Customer Home](docs/screenshots/customer-home.png)
 
-> Lưu ý: tạo thư mục `docs/screenshots/` trong gốc dự án và đặt ảnh tương ứng theo tên file trên để GitHub hiển thị được ảnh trong README.
+#### Tìm kiếm sản phẩm
+![Customer Search](docs/screenshots/customer-search.png)
+
+#### Chi tiết sản phẩm
+![Customer Product Detail](docs/screenshots/customer-product-detail.png)
+
+#### Giỏ hàng / Thanh toán
+![Customer Cart](docs/screenshots/customer-cart.png)
+
+#### Thông tin cá nhân
+![Customer Profile](docs/screenshots/customer-profile.png)
+
+#### Đơn hàng của khách hàng
+![Customer Orders](docs/screenshots/customer-orders.png)
 
 ## Cấu trúc thư mục
 
