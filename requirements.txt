@@ -1,0 +1,71 @@
+# Dự án Node/MERN — hướng dẫn cài đặt, chạy và build cho người nhận mã
+# Đây là dự án JavaScript (Node + React). Không có phụ thuộc Python.
+# Người dùng nên cài Node.js (>=16) và npm hoặc yarn, và MongoDB (local hoặc Atlas).
+
+# Các file package.json chính:
+# - server: server/package.json
+# - admin client: client-admin/package.json
+# - customer client: client-customer/package.json
+
+# 1) Cài đặt (Windows, PowerShell hoặc cmd):
+# Mở 3 terminal hoặc chạy tuần tự
+# Server:
+#   cd server
+#   npm install
+#   copy .env.example .env   # sửa .env theo môi trường (không commit .env)
+
+# Admin client (dev):
+#   cd ..\client-admin
+#   npm install
+#   set PORT=3001
+#   npm start
+
+# Customer client (dev):
+#   cd ..\client-customer
+#   npm install
+#   set PORT=3002
+#   npm start
+
+# Lưu ý (Windows PowerShell):
+#   $env:PORT=3001; npm start
+
+# 2) Chạy ở môi trường phát triển (gợi ý):
+# - Chạy MongoDB local hoặc dùng Atlas. Nếu dùng Docker:
+#   docker run -d -p 27017:27017 --name mongodb mongo:6
+# - Trong terminal A: chạy server (port mặc định 3000):
+#   cd server
+#   npm run start
+#   (Nếu gặp lỗi header size, chạy: npm run start:fix)
+# - Trong terminal B: chạy client-admin (port 3001)
+# - Trong terminal C: chạy client-customer (port 3002)
+
+# 3) Chạy ở môi trường production (build clients và serve bằng server):
+# - Build clients:
+#   cd client-admin && npm install && npm run build
+#   cd ../client-customer && npm install && npm run build
+# - Start server (server sẽ phục vụ build files):
+#   cd ../server && npm install && node index.js
+
+# 4) Biến môi trường quan trọng (server/.env.example):
+# - DB_SERVER, DB_USER, DB_PASS, DB_DATABASE (MongoDB Atlas hoặc connection string)
+# - JWT_SECRET, JWT_EXPIRES
+# - EMAIL_USER, EMAIL_PASS (nếu gửi email)
+
+# 5) Gợi ý/khuyến nghị:
+# - Không commit giá trị thật trong `.env`.
+# - Nếu muốn chạy client trên port mặc định 3000, thay đổi PORT của server trước khi chạy client.
+# - Kiểm tra `server/index.js` để biết port mặc định (3000).
+
+# 6) Nếu cần file `requirements.txt` cho Python (ví dụ cho scripts/deploy), cho biết danh sách gói Python cần thiết.
+
+# Tóm tắt nhanh các lệnh copy/paste (Windows PowerShell):
+#
+# Server:
+# $env:PORT=3000; cd server; npm install; copy .env.example .env; # sửa .env
+# npm run start
+#
+# Build và serve production:
+# cd client-admin; npm install; npm run build
+# cd ../client-customer; npm install; npm run build
+# cd ../server; npm install; node index.js
+
